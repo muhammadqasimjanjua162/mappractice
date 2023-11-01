@@ -1,10 +1,14 @@
 import React from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  HeatmapLayer,
+} from "@react-google-maps/api";
 import { Marker } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: "100vw",
-  height: "100vh",
+  width: "90vw",
+  height: "90vh",
 };
 
 const center = {
@@ -36,6 +40,13 @@ function GoogleComponents(props) {
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
+  const heatmapData = [
+    new window.google.maps.LatLng(-3.7440031588962737, -38.52206826210022),
+    new window.google.maps.LatLng(-3.7444956319141656, -38.52163910865784),
+    new window.google.maps.LatLng(-3.744210995148375, -38.52184771194048),
+    new window.google.maps.LatLng(-3.744281513244763, -38.52034091949463),
+    new window.google.maps.LatLng(-3.7454484593578687, -38.52201461791992),
+  ];
 
   return isLoaded ? (
     <GoogleMap
@@ -44,9 +55,14 @@ function GoogleComponents(props) {
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onClick={(ev) => {
+        console.log("latitide = ", ev.latLng.lat());
+        console.log("longitude = ", ev.latLng.lng());
+      }}
     >
       {/* Child components, such as markers, info windows, etc. */}
       <Marker position={center} />
+      <HeatmapLayer data={heatmapData} />
     </GoogleMap>
   ) : (
     <div>Loading...</div>
